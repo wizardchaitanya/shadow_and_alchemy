@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Shadow _ Alchemy.slnx"
+    "dotnet.defaultSolution": "shadow_and_alchemy.slnx"
 }
