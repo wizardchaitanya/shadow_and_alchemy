@@ -6,17 +6,34 @@ public class Shadow : MonoBehaviour
 {
     public Transform footPoint;        // Player Foot Position
     public Transform lightSource;   // Sun / Moon
+    public Torch torch;
 
     //public float shadowDistance = 0.5f;
     public float maxLightDistance = 10f;
     public float baseLength = 0.4f;
     public float maxLength = 1.5f;
 
+    private SpriteRenderer spriteRenderer;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     void Update()
     {
         if (!footPoint || !lightSource) return;
 
         ShadowBehavior();
+
+        if (torch != null && torch.isPlayerInRange)
+        {
+            StartCoroutine(FadeIn());
+        }
+        else
+        {
+            StartCoroutine(FadeOut());
+        }
     }
 
     void ShadowBehavior()
@@ -35,4 +52,33 @@ public class Shadow : MonoBehaviour
         // Position stays locked to player's feet
         transform.position = footPoint.position + (Vector3)(0.5f * Vector2.up);
     }
+
+    private IEnumerator FadeIn()
+    {
+        float alphaVal = spriteRenderer.color.a;
+        Color tmp = spriteRenderer.color;
+
+        while (spriteRenderer.color.a > 0)
+        {
+            alphaVal -= 0.01f;
+            tmp.a = alphaVal;
+            spriteRenderer.color = tmp;
+            yield return new WaitForSeconds(0.05f); // update interval
+        }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float alphaVal = spriteRenderer.color.a;
+        Color tmp = spriteRenderer.color;
+
+        while (spriteRenderer.color.a < 0.3529f)
+        {
+            alphaVal += 0.01f;
+            tmp.a = alphaVal;
+            spriteRenderer.color = tmp;
+            yield return new WaitForSeconds(0.05f); // update interval
+        }
+    }
+
 }
