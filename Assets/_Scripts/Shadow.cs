@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shadow : MonoBehaviour
 {
-    public Transform caster;        // Player or object
+    public Transform footPoint;        // Player Foot Position
     public Transform lightSource;   // Sun / Moon
 
     //public float shadowDistance = 0.5f;
@@ -14,7 +14,7 @@ public class Shadow : MonoBehaviour
 
     void Update()
     {
-        if (!caster || !lightSource) return;
+        if (!footPoint || !lightSource) return;
 
         ShadowBehavior();
     }
@@ -22,9 +22,9 @@ public class Shadow : MonoBehaviour
     void ShadowBehavior()
     {
         // Direction away from light
-        Vector2 dir = (caster.position - lightSource.position).normalized;
+        Vector2 dir = (footPoint.position - lightSource.position).normalized;
         // Distance from light
-        float dist = Vector2.Distance(caster.position, lightSource.position);
+        float dist = Vector2.Distance(footPoint.position, lightSource.position);
         // Shadow length
         float length = Mathf.Lerp(baseLength, maxLength, dist / maxLightDistance);
         // Rotation
@@ -33,6 +33,6 @@ public class Shadow : MonoBehaviour
         // Scale ONLY in Y (because pivot is at bottom)
         transform.localScale = new Vector3(length, 1f, 1f);
         // Position stays locked to player's feet
-        transform.position = caster.position;
+        transform.position = footPoint.position + (Vector3)(0.5f * Vector2.up);
     }
 }
