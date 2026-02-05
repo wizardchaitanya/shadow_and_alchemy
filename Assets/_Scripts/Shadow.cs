@@ -25,15 +25,18 @@ public class Shadow : MonoBehaviour
         if (!footPoint || !lightSource) return;
 
         ShadowBehavior();
+    }
 
-        if (torch != null && torch.isPlayerInRange)
+    void FixedUpdate()
+    {
+       if (torch != null && torch.isPlayerInRange)
         {
             StartCoroutine(FadeIn());
         }
         else
         {
             StartCoroutine(FadeOut());
-        }
+        } 
     }
 
     void ShadowBehavior()
